@@ -1,0 +1,326 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IP Sorgu | V1R3X TEAM</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Roboto', sans-serif;
+      background: #000000;
+      color: #fff;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 50px 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+      text-align: center;
+      width: 90%;
+      max-width: 600px;
+      margin: 20px auto;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .container img {
+      width: 60px;
+      margin-bottom: 20px;
+      border-radius: 50%;
+    }
+
+    .container h1 {
+      font-size: 32px;
+      color: #ffffff;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px #00ff00;
+    }
+
+    label {
+      font-size: 18px;
+      display: block;
+      margin: 20px 0 10px;
+      color: #ffffff;
+    }
+
+    input[type="text"] {
+      padding: 14px;
+      width: 100%;
+      max-width: 400px;
+      border: none;
+      border-radius: 8px;
+      background-color: #1e1e1e;
+      color: #ffffff;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input[type="text"]:focus {
+      background-color: #2a2a2a;
+      box-shadow: 0 0 5px #00ff00;
+    }
+
+    button {
+      margin-top: 25px;
+      padding: 14px 28px;
+      background-color: #00ff00;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: #00cc00;
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #00ff00;
+    }
+
+    .result-container {
+      background-color: #111;
+      color: #fff;
+      text-align: left;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 30px;
+      font-size: 14px;
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid #00ff00;
+    }
+
+    .result-item {
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #333;
+    }
+
+    .result-item:last-child {
+      border-bottom: none;
+    }
+
+    .result-label {
+      font-weight: bold;
+      color: #00ff00;
+    }
+
+    .result-value {
+      color: #fff;
+    }
+
+    audio {
+      margin-top: 20px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .footer-message {
+      position: fixed;
+      bottom: 10px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      color: #fff;
+      font-size: 16px;
+      text-shadow: 0 0 10px #fff;
+      z-index: 10;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #1e1e1e;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #00ff00;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00cc00;
+    }
+
+    .hacker-style {
+      color: #00ff00;
+      text-shadow: 0 0 5px #00ff00;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg"></canvas>
+
+  <div class="container">
+    <img src="https://cdn-icons-png.flaticon.com/512/149/149852.png" alt="IP Icon" />
+    <h1 class="hacker-style">V1R3X TEAM</h1>
+    <label for="ipAdresi">IP Adresi Girin:</label>
+    <input type="text" id="ipAdresi" placeholder="Örnek:123.111.11." />
+    <button onclick="sorgula()">SORGULA</button>
+    
+    <audio controls autoplay loop>
+      <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+      Tarayıcınız audio elementini desteklemiyor.
+    </audio>
+    
+    <div id="sonuc" class="result-container"></div>
+  </div>
+
+  <div class="footer-message">KL4XY0R | AYŞO | SCOFİELD | YUZİW</div>
+
+  <script>
+    function sorgula() {
+      const ip = document.getElementById('ipAdresi').value;
+      if(!ip) {
+        document.getElementById('sonuc').innerHTML = '<div class="result-item"><span class="result-label">Hata:</span> <span class="result-value">Lütfen bir IP adresi girin.</span></div>';
+        return;
+      }
+      
+      document.getElementById('sonuc').innerHTML = '<div class="result-item"><span class="result-label">Durum:</span> <span class="result-value hacker-style">Sorgulanıyor...</span></div>';
+      
+      // Ana IP bilgilerini al
+      fetch(`https://ipapi.co/${ip}/json/`)
+        .then(res => res.json())
+        .then(data => {
+          let resultHTML = '';
+          
+          if(data.error) {
+            resultHTML = `<div class="result-item"><span class="result-label">Hata:</span> <span class="result-value">${data.reason || 'Geçersiz IP adresi'}</span></div>`;
+          } else {
+            // Ekstra bilgiler için ikinci bir API çağrısı
+            fetch(`https://ipwhois.app/json/${ip}`)
+              .then(res2 => res2.json())
+              .then(data2 => {
+                // Tüm bilgileri birleştir
+                resultHTML = `
+                  <div class="result-item"><span class="result-label">IP Adresi:</span> <span class="result-value hacker-style">${data.ip || 'Bilinmiyor'}</span></div>
+                  <div class="result-item"><span class="result-label">Lokasyon:</span> <span class="result-value">${data.city || 'Bilinmiyor'}, ${data.region || 'Bilinmiyor'}, ${data.country_name || 'Bilinmiyor'}</span></div>
+                  <div class="result-item"><span class="result-label">Koordinatlar:</span> <span class="result-value hacker-style">${data2.latitude || 'Bilinmiyor'}, ${data2.longitude || 'Bilinmiyor'}</span></div>
+                  <div class="result-item"><span class="result-label">Posta Kodu:</span> <span class="result-value">${data.postal || 'Bilinmiyor'}</span></div>
+                  <div class="result-item"><span class="result-label">Saat Dilimi:</span> <span class="result-value">${data.timezone || 'Bilinmiyor'}</span></div>
+                  <div class="result-item"><span class="result-label">Para Birimi:</span> <span class="result-value">${data.currency || 'Bilinmiyor'} (${data.currency_name || 'Bilinmiyor'})</span></div>
+                  <div class="result-item"><span class="result-label">İnternet Sağlayıcı:</span> <span class="result-value hacker-style">${data.org || 'Bilinmiyor'}</span></div>
+                  <div class="result-item"><span class="result-label">AS Numarası:</span> <span class="result-value">${data.asn || 'Bilinmiyor'}</span></div>
+                  <div class="result-item"><span class="result-label">Kıta:</span> <span class="result-value">${data2.continent || 'Bilinmiyor'} (${data2.continent_code || 'XX'})</span></div>
+                  <div class="result-item"><span class="result-label">Ülke Kodu:</span> <span class="result-value hacker-style">${data.country || 'XX'}</span></div>
+                  <div class="result-item"><span class="result-label">Telefon Kodu:</span> <span class="result-value">${data2.country_phone || 'Bilinmiyor'}</span></div>
+                  <div class="result-item"><span class="result-label">Başkent:</span> <span class="result-value">${data2.country_capital || 'Bilinmiyor'}</span></div>
+                  <div class="result-item"><span class="result-label">Dil:</span> <span class="result-value">${data2.languages || 'Bilinmiyor'}</span></div>
+                  <div class="result-item"><span class="result-label">Proxy/VPN:</span> <span class="result-value hacker-style">${data2.security && data2.security.proxy ? 'Evet' : 'Hayır'}</span></div>
+                  <div class="result-item"><span class="result-label">Tor:</span> <span class="result-value hacker-style">${data2.security && data2.security.tor ? 'Evet' : 'Hayır'}</span></div>
+                  <div class="result-item"><span class="result-label">ISP:</span> <span class="result-value">${data2.isp || 'Bilinmiyor'}</span></div>
+                  <div class="result-item"><span class="result-label">Kullanıcı Tipi:</span> <span class="result-value">${data2.type || 'Bilinmiyor'}</span></div>
+                  <div class="result-item"><span class="result-label">Harita Görüntüsü:</span> <span class="result-value"><a href="https://maps.google.com/?q=${data2.latitude},${data2.longitude}" target="_blank" class="hacker-style">Haritada Göster</a></span></div>
+                `;
+                
+                document.getElementById('sonuc').innerHTML = resultHTML;
+              })
+              .catch(err => {
+                // İkinci API başarısız olursa sadece temel bilgileri göster
+                resultHTML = `
+                  <div class="result-item"><span class="result-label">IP Adresi:</span> <span class="result-value hacker-style">${data.ip || 'Bilinmiyor'}</span></div>
+                  <div class="result-item"><span class="result-label">Şehir:</span> <span class="result-value">${data.city || 'Bilinmiyor'}</span></div>
+                  <div class="result-item"><span class="result-label">Bölge:</span> <span class="result-value">${data.region || 'Bilinmiyor'} (${data.region_code || 'XX'})</span></div>
+                  <div class="result-item"><span class="result-label">Ülke:</span> <span class="result-value hacker-style">${data.country_name || 'Bilinmiyor'} (${data.country || 'XX'})</span></div>
+                  <div class="result-item"><span class="result-label">Posta Kodu:</span> <span class="result-value">${data.postal || 'Bilinmiyor'}</span></div>
+                  <div class="result-item"><span class="result-label">Saat Dilimi:</span> <span class="result-value">${data.timezone || 'Bilinmiyor'}</span></div>
+                  <div class="result-item"><span class="result-label">Para Birimi:</span> <span class="result-value">${data.currency || 'Bilinmiyor'} (${data.currency_name || 'Bilinmiyor'})</span></div>
+                  <div class="result-item"><span class="result-label">İnternet Sağlayıcı:</span> <span class="result-value hacker-style">${data.org || 'Bilinmiyor'}</span></div>
+                  <div class="result-item"><span class="result-label">AS Numarası:</span> <span class="result-value">${data.asn || 'Bilinmiyor'}</span></div>
+                  <div class="result-item"><span class="result-label">Hata:</span> <span class="result-value hacker-style">Ek bilgiler alınamadı</span></div>
+                `;
+                document.getElementById('sonuc').innerHTML = resultHTML;
+              });
+          }
+        })
+        .catch(err => {
+          document.getElementById('sonuc').innerHTML = '<div class="result-item"><span class="result-label">Hata:</span> <span class="result-value hacker-style">IP sorgusu yapılamadı.</span></div>';
+          console.error(err);
+        });
+    }
+
+    const canvas = document.getElementById('bg');
+    const ctx = canvas.getContext('2d');
+    let w, h, particles = [], maxParticles = 100, connectDist = 100;
+
+    function initCanvas() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      particles = [];
+      for(let i = 0; i < maxParticles; i++){
+        particles.push({
+          x: Math.random()*w,
+          y: Math.random()*h,
+          vx: (Math.random()-0.5)*0.5,
+          vy: (Math.random()-0.5)*0.5,
+          size: Math.random()*2 + 1
+        });
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0,0,w,h);
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if(p.x < 0 || p.x > w) p.vx *= -1;
+        if(p.y < 0 || p.y > h) p.vy *= -1;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+        ctx.fillStyle = '#00ff00';
+        ctx.fill();
+      });
+
+      for(let i=0; i<particles.length; i++){
+        for(let j=i+1; j<particles.length; j++){
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if(dist < connectDist){
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = 'rgba(0,255,0,' + (1 - dist/connectDist) + ')';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', initCanvas);
+    initCanvas();
+    draw();
+  </script>
+</body>
+</html>
